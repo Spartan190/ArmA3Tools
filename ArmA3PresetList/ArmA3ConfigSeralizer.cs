@@ -256,7 +256,74 @@ namespace ArmA3PresetList
         /// <returns></returns>
         public string SerializeFromJson(string json)
         {
-            return null;
+            StringBuilder output = new StringBuilder();
+            StringReader input = new StringReader(json);
+
+            LAST last = LAST.CLASS;
+            output.Append("{");
+
+            bool emptyClass = true;
+            bool classEnd = false;
+
+            string currentLine = "";
+
+            do
+            {
+                currentLine = input.ReadLine();
+                currentLine = currentLine.Trim().Replace("\\", "\\\\").Replace("\t", "").Replace("\n", "");
+
+                if(!currentLine.StartsWith("//") && !currentLine.StartsWith("#"))
+                {
+                    if(currentLine.StartsWith("class "))
+                    {
+                        if(last == LAST.PROPERTY || last == LAST.ARRAY)
+                        {
+                            output.Append(",");
+                        }
+
+                        if(emptyClass  && classEnd)
+                        {
+                            output.Append(",");
+                        }
+
+                        if (currentLine.EndsWith("{};"))
+                        {
+                            if(currentLine.EndsWith(" {};"))
+                            {
+                                output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 10)).Append("\":{}");
+                            } else
+                            {
+                                output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 9)).Append("\":{}");
+                            }
+                            classEnd = true;
+                        } else
+                        {
+                            if (currentLine.EndsWith("{"))
+                            {
+                                if(currentLine.EndsWith(" {"))
+                                {
+                                    output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 8)).Append("\":{");
+                                } else
+                                {
+                                    output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 7)).Append("\":{");
+                                }
+                            } else
+                            {
+                                output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 6)).Append("\":");
+                            }
+                            classEnd = false;
+                        }
+                        emptyClass = true;
+                        last = LAST.CLASS;
+                    } else
+                    {
+                        // ---------------------------------------------------- Stopped here
+                    }
+                }
+
+            } while (currentLine != null);
+
+            return output.ToString();
         }
 
     }

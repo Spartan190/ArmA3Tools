@@ -110,6 +110,7 @@ const char* config2json(const char* config)
 				last = CLASS;
 			}
 			else {
+				// Stopped here -------------------------------------------------------------------------------------------------------------------
 				std::size_t found = str.find("=");
 				if (found != std::string::npos) {
 					emptyClass = false;
