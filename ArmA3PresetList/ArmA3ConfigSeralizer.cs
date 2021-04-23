@@ -249,6 +249,8 @@ namespace ArmA3PresetList
             return output.ToString();
         }
 
+        enum STATE { Empty, KeyWaiting, KeyLoading, ValueWaiting, ValueLoading, ArrayLoading };
+
         /// <summary>
         /// Serializes a JSON ArmA3 Config data to HPP/SQM
         /// </summary>
@@ -256,230 +258,147 @@ namespace ArmA3PresetList
         /// <returns></returns>
         public string SerializeFromJson(string json)
         {
+
+            StringReader file = new StringReader(json);
+
             StringBuilder output = new StringBuilder();
-            StringReader input = new StringReader(json);
 
-            LAST last = LAST.CLASS;
-            output.Append("{");
+            STATE state = STATE.Empty;
 
-            bool emptyClass = true;
-            bool classEnd = false;
+            int indent = 0;
 
-            string currentLine = "";
-
+            int c = -1;
+            string bufferK = "";
+            string bufferV = "";
             do
             {
-                currentLine = input.ReadLine();
-                currentLine = currentLine.Trim().Replace("\\", "\\\\").Replace("\t", "").Replace("\n", "");
-
-                if(!currentLine.StartsWith("//") && !currentLine.StartsWith("#"))
+                c = file.Read();
+                if(c == -1)
                 {
-                    if(currentLine.StartsWith("class "))
-                    {
-                        if(last == LAST.PROPERTY || last == LAST.ARRAY)
+                    break;
+                }
+
+                switch (state)
+                {
+                    case STATE.Empty:
+                        switch (c)
                         {
-                            output.Append(",");
+                            case '{':
+                                state = STATE.KeyWaiting;
+                                break;
                         }
-
-                        if(emptyClass  && classEnd)
+                        break;
+                    case STATE.KeyWaiting:
+                        switch (c)
                         {
-                            output.Append(",");
-                        }
-
-                        if (currentLine.EndsWith("{};"))
-                        {
-                            if(currentLine.EndsWith(" {};"))
-                            {
-                                output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 10)).Append("\":{}");
-                            } else
-                            {
-                                output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 9)).Append("\":{}");
-                            }
-                            classEnd = true;
-                        } else
-                        {
-                            if (currentLine.EndsWith("{"))
-                            {
-                                if(currentLine.EndsWith(" {"))
+                            case '"':
+                                state = STATE.KeyLoading;
+                                if (bufferK != "")
                                 {
-                                    output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 8)).Append("\":{");
-                                } else
-                                {
-                                    output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 7)).Append("\":{");
+                                    output.Append(new string(' ', Math.Abs(indent))).Append("class ").Append(bufferK).Append("\n").Append(new string(' ', Math.Abs(indent))).Append("{\n");
+                                    bufferK = "";
+                                    indent += 2;
                                 }
-                            } else
-                            {
-                                output.Append("\"").Append(currentLine.Substring(6, currentLine.Length - 6)).Append("\":");
-                            }
-                            classEnd = false;
-                        }
-                        emptyClass = true;
-                        last = LAST.CLASS;
-                    } else
-                    {
-                        int found = currentLine.IndexOf("=");
-                        if(found != -1)
-                        {
-                            emptyClass = false;
-                            int array = currentLine.IndexOf("[]");
-                            if (last != LAST.CLASS || (last == LAST.CLASS && classEnd))
-                            {
-                                output.Append(",");
-                            }
-                            if (array != -1 && array < found) {
-                                //Array
-                                output.Append("\"").Append(currentLine.Substring(0, array)).Append("\":[");
-                                int end_array = currentLine.IndexOf("};");
-                                string value;
-                                if (end_array != -1) {
-                                    if (currentLine.IndexOf("= {") == -1) {
-                                        value = currentLine.Substring(found + 2, currentLine.Length - found - 4);
-                                    }
-
-                            else
-                                    {
-                                        value = currentLine.Substring(found + 3, currentLine.Length - found - 5);
-                                    }
-                                    value = value.Replace("{", "[").Replace("}", "]");
-                                    string newvalue = "";
-                                    bool stringOpen = false;
-                                    for (int i = 0; i < value.Length; i++)
-                                    {
-                                        if (stringOpen)
-                                        {
-                                            if (value[i] == '"')
-                                            {
-                                                if (value[i + 1] == '"')
-                                                {
-                                                    newvalue += "\\\"\\\"";
-                                                    i++;
-                                                    continue;
-                                                }
-                                                else
-                                                {
-                                                    stringOpen = false;
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (value[i] == '"')
-                                            {
-                                                stringOpen = true;
-                                            }
-                                        }
-                                        newvalue += value[i];
-                                    }
-                                    value = newvalue;
-                                }
-
-                        else
+                                break;
+                            case '}':
+                                if (bufferK != "")
                                 {
-                                    bool done = false;
-                                    string newvalue = "";
-                                    while (!done)
-                                    {
-                                        string next;
-                                        next = input.ReadLine();
-                                        done = next.IndexOf("};") != -1;
-                                        if (!done)
-                                        {
-                                            string innerValue = next.Trim();
-                                            if (innerValue == "{")
-                                            {
-                                                continue;
-                                            }
-                                            bool stringOpen = false;
-                                            for (int i = 0; i < innerValue.Length; i++)
-                                            {
-                                                if (stringOpen)
-                                                {
-                                                    if (innerValue[i] == '"')
-                                                    {
-                                                        if (innerValue[i + 1] == '"')
-                                                        {
-                                                            newvalue += "\\\"\\\"";
-                                                            i++;
-                                                            continue;
-                                                        }
-                                                        else
-                                                        {
-                                                            stringOpen = false;
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    if (innerValue[i] == '"')
-                                                    {
-                                                        stringOpen = true;
-                                                    }
-                                                }
-                                                newvalue += innerValue[i];
-                                            }
-                                        }
-                                    }
-                                    value = newvalue;
-                                }
-
-                                output.Append(value).Append("]");
-                                last = LAST.ARRAY;
-                            }
-
-                    else
-                            {
-                                //Property
-                                string value;
-                                string property;
-                                int eqpos = currentLine.IndexOf(" = ");
-                                if (eqpos + 1 == found)
-                                {
-                                    value = currentLine.Substring(found + 2, currentLine.Length - found - 3);
-                                    property = currentLine.Substring(0, found - 1);
+                                    output.Append(new string(' ', Math.Abs(indent))).Append("class ").Append(bufferK).Append("{};\n");
+                                    bufferK = "";
                                 }
                                 else
                                 {
-                                    value = currentLine.Substring(found + 1, currentLine.Length - found - 2);
-                                    property = currentLine.Substring(0, found);
-                                }
-                                while (value.IndexOf("\" \\\\n \"") != -1) {
-                                    value = value.Replace("\" \\\\n \"", "\\n");
-                                }
-                                if (value != "\"\"")
-                                {
-                                    if (value.StartsWith("\"\"\""))
+                                    if (indent != 0)
                                     {
-                                        value = value.Substring(1, value.Length - 1);
-                                        value = value.Replace("\"\"", "\\\"\\\"");
-                                        value = "\"" + value;
-                                    }
-                                    else
-                                    {
-                                        value = value.Replace("\"\"", "\\\"\\\"");
+                                        indent -= 2;
+                                        output.Append(new string(' ', Math.Abs(indent))).Append("};\n");
                                     }
                                 }
-                                output.Append("\"").Append(property).Append("\":").Append(value);
-                                last = LAST.PROPERTY;
-                            }
-                        } else
-                        {
-                            if (currentLine == "};")
-                            {
-                                output.Append("}");
-                                classEnd = true;
-                            }
-                            else
-                            {
-                                output.Append(currentLine);
-                            }
+                                break;
                         }
-                    }
+                        break;
+                    case STATE.KeyLoading:
+                        switch (c)
+                        {
+                            case '"':
+                                state = STATE.ValueWaiting;
+                                break;
+                            default:
+                                bufferK += (char)c;
+                                break;
+                        }
+                        break;
+                    case STATE.ValueWaiting:
+                        switch (c)
+                        {
+                            case ':':
+                                break;
+                            case '{':
+                                state = STATE.KeyWaiting;
+                                break;
+                            case '[':
+                                state = STATE.ArrayLoading;
+                                bufferK += "[]";
+                                break;
+                            case ' ':
+                                break;
+                            default:
+                                state = STATE.ValueLoading;
+                                bufferV += (char)c;
+                                break;
+                        }
+                        break;
+                    case STATE.ValueLoading:
+                        switch (c)
+                        {
+                            case '}':
+                                state = STATE.KeyWaiting;
+                                output.Append(new string(' ', Math.Abs(indent))).Append(bufferK).Append(" = ").Append(bufferV).Append(";\n");
+                                indent -= 2;
+                                output.Append(new string(' ', Math.Abs(indent))).Append("};\n");
+                                bufferK = "";
+                                bufferV = "";
+                                break;
+                            case ',':
+                                state = STATE.KeyWaiting;
+                                output.Append(new string(' ', Math.Abs(indent))).Append(bufferK).Append(" = ").Append(bufferV).Append(";\n");
+                                bufferK = "";
+                                bufferV = "";
+                                break;
+                            default:
+                                bufferV += (char)c;
+                                break;
+                        }
+                        break;
+                    case STATE.ArrayLoading:
+                        switch (c)
+                        {
+                            case '}':
+                                state = STATE.KeyWaiting;
+                                output.Append(new string(' ', Math.Abs(indent))).Append(bufferK).Append(" = {").Append(bufferV).Append("};\n");
+                                indent -= 2;
+                                output.Append(new string(' ', Math.Abs(indent))).Append("};\n");
+                                bufferK = "";
+                                bufferV = "";
+                                break;
+                            case ']':
+                                state = STATE.KeyWaiting;
+                                output.Append(new string(' ', Math.Abs(indent))).Append(bufferK).Append(" = {").Append(bufferV).Append("};\n");
+                                bufferK = "";
+                                bufferV = "";
+                                break;
+                            case '[':
+                                break;
+                            default:
+                                bufferV += (char)c;
+                                break;
+                        }
+                        break;
                 }
+            } while (c != -1);
 
-            } while (currentLine != null);
-
-            output.AppendLine("}");
             return output.ToString();
+
         }
 
     }

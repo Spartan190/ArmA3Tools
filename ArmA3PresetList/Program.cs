@@ -14,12 +14,15 @@ namespace ArmA3PresetList
         static void Main(string[] args)
         {
 
-            /*string content = File.ReadAllText(args[0]);
+            string content = File.ReadAllText(args[0]);
             ArmA3ConfigSeralizer configSeralizer = new ArmA3ConfigSeralizer();
+            string json = configSeralizer.DeserialzeToJson(content);
+            string missionSqm = configSeralizer.SerializeFromJson(json);
+            File.WriteAllText("test.json", json);
+            File.WriteAllText("test.sqm", missionSqm);
+            Console.WriteLine("done");
 
-            Console.WriteLine(configSeralizer.DeserialzeToJson(content));*/
-
-            if(args.Length == 0)
+            /*if(args.Length == 0)
             {
                 Console.WriteLine("No argument given. Please specify the ArmA 3 Preset file path as argument.");
                 Environment.Exit(-1);
@@ -63,7 +66,7 @@ namespace ArmA3PresetList
             Console.WriteLine();
             Console.WriteLine("Mods Regex:");
             Console.WriteLine(checkRegex.Remove(checkRegex.Length - 1, 1).ToString());
-            
+            */
             Console.ReadKey();
         }
     }
