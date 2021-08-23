@@ -265,11 +265,11 @@ namespace ArmA3PresetList
 
             STATE state = STATE.Empty;
 
-            int indent = 0;
+            int currentIndent = 0;
 
             int c = -1;
-            string bufferK = "";
-            string bufferV = "";
+            string bufferKey = "";
+            string bufferValue = "";
             do
             {
                 c = file.Read();
@@ -293,25 +293,25 @@ namespace ArmA3PresetList
                         {
                             case '"':
                                 state = STATE.KeyLoading;
-                                if (bufferK != "")
+                                if (bufferKey != "")
                                 {
-                                    output.Append(new string(' ', Math.Abs(indent))).Append("class ").Append(bufferK).Append("\n").Append(new string(' ', Math.Abs(indent))).Append("{\n");
-                                    bufferK = "";
-                                    indent += 2;
+                                    output.Append(new string(' ', currentIndent)).Append("class ").Append(bufferKey).Append("\n").Append(new string(' ', currentIndent)).Append("{\n");
+                                    bufferKey = "";
+                                    currentIndent += 2;
                                 }
                                 break;
                             case '}':
-                                if (bufferK != "")
+                                if (bufferKey != "")
                                 {
-                                    output.Append(new string(' ', Math.Abs(indent))).Append("class ").Append(bufferK).Append("{};\n");
-                                    bufferK = "";
+                                    output.Append(new string(' ', currentIndent)).Append("class ").Append(bufferKey).Append("{};\n");
+                                    bufferKey = "";
                                 }
                                 else
                                 {
-                                    if (indent != 0)
+                                    if (currentIndent != 0)
                                     {
-                                        indent -= 2;
-                                        output.Append(new string(' ', Math.Abs(indent))).Append("};\n");
+                                        currentIndent -= 2;
+                                        output.Append(new string(' ', currentIndent)).Append("};\n");
                                     }
                                 }
                                 break;
@@ -324,7 +324,7 @@ namespace ArmA3PresetList
                                 state = STATE.ValueWaiting;
                                 break;
                             default:
-                                bufferK += (char)c;
+                                bufferKey += (char)c;
                                 break;
                         }
                         break;
@@ -338,13 +338,13 @@ namespace ArmA3PresetList
                                 break;
                             case '[':
                                 state = STATE.ArrayLoading;
-                                bufferK += "[]";
+                                bufferKey += "[]";
                                 break;
                             case ' ':
                                 break;
                             default:
                                 state = STATE.ValueLoading;
-                                bufferV += (char)c;
+                                bufferValue += (char)c;
                                 break;
                         }
                         break;
@@ -353,20 +353,20 @@ namespace ArmA3PresetList
                         {
                             case '}':
                                 state = STATE.KeyWaiting;
-                                output.Append(new string(' ', Math.Abs(indent))).Append(bufferK).Append(" = ").Append(bufferV).Append(";\n");
-                                indent -= 2;
-                                output.Append(new string(' ', Math.Abs(indent))).Append("};\n");
-                                bufferK = "";
-                                bufferV = "";
+                                output.Append(new string(' ', currentIndent)).Append(bufferKey).Append(" = ").Append(bufferValue).Append(";\n");
+                                currentIndent -= 2;
+                                output.Append(new string(' ', currentIndent)).Append("};\n");
+                                bufferKey = "";
+                                bufferValue = "";
                                 break;
                             case ',':
                                 state = STATE.KeyWaiting;
-                                output.Append(new string(' ', Math.Abs(indent))).Append(bufferK).Append(" = ").Append(bufferV).Append(";\n");
-                                bufferK = "";
-                                bufferV = "";
+                                output.Append(new string(' ', currentIndent)).Append(bufferKey).Append(" = ").Append(bufferValue).Append(";\n");
+                                bufferKey = "";
+                                bufferValue = "";
                                 break;
                             default:
-                                bufferV += (char)c;
+                                bufferValue += (char)c;
                                 break;
                         }
                         break;
@@ -375,22 +375,22 @@ namespace ArmA3PresetList
                         {
                             case '}':
                                 state = STATE.KeyWaiting;
-                                output.Append(new string(' ', Math.Abs(indent))).Append(bufferK).Append(" = {").Append(bufferV).Append("};\n");
-                                indent -= 2;
-                                output.Append(new string(' ', Math.Abs(indent))).Append("};\n");
-                                bufferK = "";
-                                bufferV = "";
+                                output.Append(new string(' ', currentIndent)).Append(bufferKey).Append(" = {").Append(bufferValue).Append("};\n");
+                                currentIndent -= 2;
+                                output.Append(new string(' ', currentIndent)).Append("};\n");
+                                bufferKey = "";
+                                bufferValue = "";
                                 break;
                             case ']':
                                 state = STATE.KeyWaiting;
-                                output.Append(new string(' ', Math.Abs(indent))).Append(bufferK).Append(" = {").Append(bufferV).Append("};\n");
-                                bufferK = "";
-                                bufferV = "";
+                                output.Append(new string(' ', currentIndent)).Append(bufferKey).Append(" = {").Append(bufferValue).Append("};\n");
+                                bufferKey = "";
+                                bufferValue = "";
                                 break;
                             case '[':
                                 break;
                             default:
-                                bufferV += (char)c;
+                                bufferValue += (char)c;
                                 break;
                         }
                         break;

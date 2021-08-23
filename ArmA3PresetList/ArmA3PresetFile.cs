@@ -14,11 +14,13 @@ namespace ArmA3PresetList
     {
         public readonly string displayName;
         public readonly string link;
+        public readonly string workshopId;
 
-        public ArmA3Mod(string displayName, string link)
+        public ArmA3Mod(string displayName, string link, string workshopId)
         {
             this.displayName = displayName;
             this.link = link;
+            this.workshopId = workshopId;
         }
     }
     class ArmA3PresetFile
@@ -55,18 +57,25 @@ namespace ArmA3PresetList
                 if (htmlDoc.DocumentNode != null)
                 {
 
-                    StringBuilder modCodes = new StringBuilder();
-                    StringBuilder modNames = new StringBuilder();
-
                     var modContainers = htmlDoc.DocumentNode.SelectNodes("//body/div/table/tr");
                     foreach (var modContainer in modContainers)
                     {
                         var modData = modContainer.SelectNodes("td");
                         string modDisplayName = modData[0].InnerText;
+                        int colonIndex = modDisplayName.IndexOf(':');
+                        if (colonIndex != -1)
+                        {
+                            modDisplayName = modDisplayName.Remove(colonIndex);
+                        }
+
+                        modDisplayName = modDisplayName.Replace("  ", " ");
+                        modDisplayName = modDisplayName.TrimEnd();
 
                         string modLink = modData[2].SelectSingleNode("a").InnerText;
 
-                        armA3Mods.Add(new ArmA3Mod(modDisplayName, modLink));
+                        string modId = modLink.Substring(modLink.LastIndexOf("?id=") + 4);
+
+                        armA3Mods.Add(new ArmA3Mod(modDisplayName, modLink, modId));
                     }
                 }
                 else
