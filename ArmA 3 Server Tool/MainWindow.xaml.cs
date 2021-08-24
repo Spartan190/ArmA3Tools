@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -78,6 +79,7 @@ namespace ArmA_3_Server_Tool
                 ArmA3PresetFile armA3PresetFile = new ArmA3PresetFile(fileName);
                 StringBuilder modNamesStringBuilder = new StringBuilder();
                 StringBuilder modIdsStringBuilder = new StringBuilder();
+                StringBuilder checkRegexStringBuilder = new StringBuilder();
 
                 var settings = Properties.Settings.Default;
                 string modNamesSeperator = settings.ModNamesSeperator;
@@ -88,7 +90,7 @@ namespace ArmA_3_Server_Tool
                 foreach (var armaMod in armA3PresetFile.armA3Mods)
                 {
 
-                    string modNameToSave = modNamesPrefix + armaMod.displayName;
+                    string modNameToSave = modNamesPrefix + HttpUtility.HtmlDecode(armaMod.displayName);
                     string modIdToSave = armaMod.workshopId;
 
                     bool modAlreadyAdded = modNamesStringBuilder.ToString().Contains(modNameToSave);
@@ -105,6 +107,7 @@ namespace ArmA_3_Server_Tool
                         }
 
                         modIdsStringBuilder.Append(modIdsSeperator);
+                        checkRegexStringBuilder.Append("|");
                     }
 
                     if (!modAlreadyAdded)
@@ -113,6 +116,7 @@ namespace ArmA_3_Server_Tool
                     }
 
                     modIdsStringBuilder.Append(modIdToSave);
+                    checkRegexStringBuilder.Append($"({armaMod.displayName.Replace("(", "\\(").Replace(")", "\\)").Replace(".", "\\.")}\\n)");
 
                 }
 
@@ -121,6 +125,9 @@ namespace ArmA_3_Server_Tool
 
                 modIdsRichTextBox.Document.Blocks.Clear();
                 modIdsRichTextBox.Document.Blocks.Add(new Paragraph(new Run(modIdsStringBuilder.ToString())));
+
+                regexRichTextBox.Document.Blocks.Clear();
+                regexRichTextBox.Document.Blocks.Add(new Paragraph(new Run(checkRegexStringBuilder.ToString())));
             }
         }
     }

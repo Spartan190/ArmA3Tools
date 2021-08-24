@@ -10,8 +10,8 @@
         <CommandBinding Command="self:CustomCommands.Settings" CanExecute="SettingsCommand_CanExecute" Executed="SettingsCommand_Executed" />
     </Window.CommandBindings>
     <Grid>
-        <DockPanel Grid.Row="0">
-            <Menu DockPanel.Dock="Top">
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="3">
+            <Menu DockPanel.Dock="Top" Height="20" Margin="0,0,0,0">
                 <MenuItem Header="{x:Static p:Resources.File}">
                     <MenuItem Command="Open" Header="{x:Static p:Resources.Open}" />
                     <MenuItem Command="self:CustomCommands.Settings" Header="{x:Static p:Resources.Settings}" />
@@ -22,20 +22,27 @@
         <RichTextBox x:Name="displayNamesRichTextBox" Margin="10" Grid.Row="2" Grid.Column="0">
             <FlowDocument>
                 <Paragraph>
-                    <Run Text="RichTextBox"/>
+                    <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
         <RichTextBox x:Name="modIdsRichTextBox" Margin="10" Grid.Row="2" Grid.Column="1">
             <FlowDocument>
                 <Paragraph>
-                    <Run Text="RichTextBox"/>
+                    <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <Label Name="modNamesLabel" Content="{x:Static p:Resources.ModNamesLabel}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" />
-        <Label Name="modIdsLabel" Content="{x:Static p:Resources.ModIDsLabel}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" />
-        <Label Name="regexLabel" Content="{x:Static p:Resources.RegexLabel}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <RichTextBox x:Name="regexRichTextBox" Margin="10" Grid.Row="2" Grid.Column="2">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Label Name="modNamesLabel" Content="{x:Static p:Resources.ModNamesLabel}" Grid.Row="1" Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <Label Name="modIdsLabel" Margin="10,0,0,0" Content="{x:Static p:Resources.ModIDsLabel}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <Label Name="regexLabel" Margin="10,0,0,0" Content="{x:Static p:Resources.RegexLabel}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
