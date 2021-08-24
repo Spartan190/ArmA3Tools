@@ -10,7 +10,7 @@ namespace ArmA3PresetList
 {
 
 
-    class ArmA3Mod
+    public class ArmA3Mod
     {
         public readonly string displayName;
         public readonly string link;
@@ -23,7 +23,7 @@ namespace ArmA3PresetList
             this.workshopId = workshopId;
         }
     }
-    class ArmA3PresetFile
+    public class ArmA3PresetFile
     {
 
         public readonly List<ArmA3Mod> armA3Mods = new List<ArmA3Mod>();
@@ -68,7 +68,7 @@ namespace ArmA3PresetList
                             modDisplayName = modDisplayName.Remove(colonIndex);
                         }
 
-                        modDisplayName = modDisplayName.Replace("  ", " ");
+                        //modDisplayName = modDisplayName.Replace("  ", " ");
                         modDisplayName = modDisplayName.TrimEnd();
 
                         string modLink = modData[2].SelectSingleNode("a").InnerText;

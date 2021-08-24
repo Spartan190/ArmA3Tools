@@ -45,7 +45,7 @@ namespace ArmA3PresetList
                 
                 string modDisplayName = HttpUtility.HtmlDecode(mod.displayName);
 
-                if (!modDisplayNames.ToString().Contains($"@{ modDisplayName};"))
+                if (!modDisplayNames.ToString().Contains($"@{modDisplayName};"))
                 {
                     modDisplayNames.Append($"@{modDisplayName};");
                     checkRegex.Append($"({modDisplayName.Replace("(", "\\(").Replace(")", "\\)")}\\n)|");
