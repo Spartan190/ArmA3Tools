@@ -1,21 +1,12 @@
 ﻿using ArmA3PresetList;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ArmA_3_Server_Tool
 {
@@ -24,6 +15,8 @@ namespace ArmA_3_Server_Tool
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private const int CopyLabelVisibiltyTime = 2 * 1000;
 
         public string LastOpenedFile {
             get;
@@ -86,6 +79,10 @@ namespace ArmA_3_Server_Tool
                 string modNamesPrefix = settings.ModNamesPrefix;
                 string modIdsSeperator = settings.ModIdsSeperator;
 
+                int modNamesCount = 0;
+                int modIdsCount = 0;
+                int regexCount = 0;
+
                 bool isFirst = true;
                 foreach (var armaMod in armA3PresetFile.armA3Mods)
                 {
@@ -104,31 +101,126 @@ namespace ArmA_3_Server_Tool
                         if (!modAlreadyAdded)
                         {
                             modNamesStringBuilder.Append(modNamesSeperator);
+                            checkRegexStringBuilder.Append("|");
                         }
 
                         modIdsStringBuilder.Append(modIdsSeperator);
-                        checkRegexStringBuilder.Append("|");
                     }
 
                     if (!modAlreadyAdded)
                     {
                         modNamesStringBuilder.Append(modNameToSave);
+                        modNamesCount++;
+                        checkRegexStringBuilder.Append($"({armaMod.displayName.Replace("(", "\\(").Replace(")", "\\)").Replace(".", "\\.")}\\n)");
+                        regexCount++;
                     }
 
                     modIdsStringBuilder.Append(modIdToSave);
-                    checkRegexStringBuilder.Append($"({armaMod.displayName.Replace("(", "\\(").Replace(")", "\\)").Replace(".", "\\.")}\\n)");
+                    modIdsCount++;
 
                 }
 
-                displayNamesRichTextBox.Document.Blocks.Clear();
-                displayNamesRichTextBox.Document.Blocks.Add(new Paragraph(new Run(modNamesStringBuilder.ToString())));
+                SetRichTextBoxText(ref displayNamesRichTextBox, modNamesStringBuilder.ToString());
+                modNamesCountLabel.Content = $"({modNamesCount})";
 
-                modIdsRichTextBox.Document.Blocks.Clear();
-                modIdsRichTextBox.Document.Blocks.Add(new Paragraph(new Run(modIdsStringBuilder.ToString())));
+                SetRichTextBoxText(ref modIdsRichTextBox, modIdsStringBuilder.ToString());
+                modIdsCountLabel.Content = $"({modIdsCount})";
 
-                regexRichTextBox.Document.Blocks.Clear();
-                regexRichTextBox.Document.Blocks.Add(new Paragraph(new Run(checkRegexStringBuilder.ToString())));
+                SetRichTextBoxText(ref regexRichTextBox, checkRegexStringBuilder.ToString());
+                regexCountLabel.Content = $"({regexCount})";
             }
+        }
+
+        private string GetRichTextBoxText(ref RichTextBox richTextBox)
+        {
+            if (richTextBox != null)
+            {
+                TextRange textRange = new TextRange(
+                // TextPointer to the start of content in the RichTextBox.
+                richTextBox.Document.ContentStart,
+                // TextPointer to the end of content in the RichTextBox.
+                richTextBox.Document.ContentEnd
+                );
+
+                // The Text property on a TextRange object returns a string
+                // representing the plain text content of the TextRange.
+                return textRange.Text.Trim();
+            }
+
+            return "";
+
+        }
+
+        private void SetRichTextBoxText(ref RichTextBox richTextBox, string text)
+        {
+            richTextBox.Document.Blocks.Clear();
+            richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+        }
+
+        private void CopyModNamesCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !string.IsNullOrEmpty(GetRichTextBoxText(ref displayNamesRichTextBox));
+        }
+
+        private void CopyModNamesCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Clipboard.SetText(GetRichTextBoxText(ref displayNamesRichTextBox));
+            modNamesCopiedLabel.Visibility = Visibility.Visible;
+            Task.Run(() =>
+            {
+                Task.Delay(CopyLabelVisibiltyTime).ContinueWith(_ =>
+                {
+
+                    Dispatcher.Invoke(() => {
+                        modNamesCopiedLabel.Visibility = Visibility.Hidden;
+                    });
+                });
+
+            });
+        }
+
+        private void CopyModIdsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !string.IsNullOrEmpty(GetRichTextBoxText(ref modIdsRichTextBox));
+        }
+
+        private void CopyModIdsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Clipboard.SetText(GetRichTextBoxText(ref modIdsRichTextBox));
+            modIdsCopiedLabel.Visibility = Visibility.Visible;
+            Task.Run(() =>
+            {
+                Task.Delay(CopyLabelVisibiltyTime).ContinueWith(_ =>
+                {
+
+                    Dispatcher.Invoke(() => {
+                        modIdsCopiedLabel.Visibility = Visibility.Hidden;
+                    });
+                });
+
+            });
+        }
+
+        private void CopyRegexCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !string.IsNullOrEmpty(GetRichTextBoxText(ref regexRichTextBox));
+        }
+
+        private void CopyRegexCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Clipboard.SetText(GetRichTextBoxText(ref regexRichTextBox));
+            regexCopiedLabel.Visibility = Visibility.Visible;
+            Task.Run(() =>
+            {
+                Task.Delay(CopyLabelVisibiltyTime).ContinueWith(_ =>
+                {
+
+                    Dispatcher.Invoke(() => {
+                        regexCopiedLabel.Visibility = Visibility.Hidden;
+                    });
+                });
+
+            });
         }
     }
 }

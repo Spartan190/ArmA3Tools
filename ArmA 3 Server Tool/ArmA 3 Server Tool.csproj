@@ -127,5 +127,11 @@
       <Name>ArmA3PresetList</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="server.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>XCOPY "$(TargetDir)*"  "D:\ArmA3PresetTool\UI" /S /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>
