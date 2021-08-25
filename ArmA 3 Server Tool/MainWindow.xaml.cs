@@ -25,7 +25,7 @@ namespace ArmA_3_Server_Tool
 
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private void ExitCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
