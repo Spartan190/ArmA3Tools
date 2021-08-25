@@ -133,6 +133,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(TargetDir)*"  "D:\ArmA3PresetTool\UI" /S /Y</PostBuildEvent>
+    <PostBuildEvent>DEL /S /Q /F "D:\ArmA3PresetTool\UI\*"
+XCOPY "$(TargetDir)*"  "D:\ArmA3PresetTool\UI" /S /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>
