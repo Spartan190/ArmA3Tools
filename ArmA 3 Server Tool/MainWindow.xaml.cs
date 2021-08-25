@@ -1,5 +1,7 @@
 ﻿using ArmA3PresetList;
 using Microsoft.Win32;
+using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -24,11 +26,14 @@ namespace ArmA_3_Server_Tool
             private set;
         }
 
+        private string title = "";
+
         private UIHelper uiHelper = new UIHelper();
 
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            title = Title;
         }
 
         private void ExitCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -64,6 +69,7 @@ namespace ArmA_3_Server_Tool
             if (openFileDialog.ShowDialog() == true)
             {
                 LastOpenedFile = openFileDialog.FileName;
+                Title = $"{title} ({Path.GetFileName(LastOpenedFile)})";
                 LoadModInfos(LastOpenedFile);
             }
         }

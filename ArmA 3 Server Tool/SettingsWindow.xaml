@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ArmA_3_Server_Tool"
         xmlns:p = "clr-namespace:ArmA_3_Server_Tool.Properties"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="230" Width="500">
+        Title="{x:Static p:Resources.Settings}" Height="230" Width="500">
     <Window.CommandBindings>
         <CommandBinding Command="Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed" />
     </Window.CommandBindings>
