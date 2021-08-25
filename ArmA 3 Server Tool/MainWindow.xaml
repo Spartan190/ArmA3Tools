@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:self="clr-namespace:ArmA_3_Server_Tool"
         xmlns:p = "clr-namespace:ArmA_3_Server_Tool.Properties"
-        Title="ArmA 3 Server Tool" Height="450" Width="800" Icon="server.png">
+        Title="ArmA 3 Server Tool" Height="450" Width="800" Icon="server.png" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
     <Window.CommandBindings>
         <CommandBinding Command="Open" CanExecute="OpenCommand_CanExecute" Executed="OpenCommand_Executed" />
         <CommandBinding Command="self:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed" />

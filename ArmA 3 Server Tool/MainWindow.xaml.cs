@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ArmA_3_Server_Tool
 {
@@ -16,12 +17,14 @@ namespace ArmA_3_Server_Tool
     public partial class MainWindow : Window
     {
 
-        private const int CopyLabelVisibiltyTime = 2 * 1000;
+        public const int CopyLabelVisibiltyTime = 2 * 1000;
 
         public string LastOpenedFile {
             get;
             private set;
         }
+
+        private UIHelper uiHelper = new UIHelper();
 
         public MainWindow()
         {
@@ -165,18 +168,7 @@ namespace ArmA_3_Server_Tool
         private void CopyModNamesCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Clipboard.SetText(GetRichTextBoxText(ref displayNamesRichTextBox));
-            modNamesCopiedLabel.Visibility = Visibility.Visible;
-            Task.Run(() =>
-            {
-                Task.Delay(CopyLabelVisibiltyTime).ContinueWith(_ =>
-                {
-
-                    Dispatcher.Invoke(() => {
-                        modNamesCopiedLabel.Visibility = Visibility.Hidden;
-                    });
-                });
-
-            });
+            uiHelper.ShowLabel(modIdsCopiedLabel, CopyLabelVisibiltyTime, Dispatcher);
         }
 
         private void CopyModIdsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -187,18 +179,7 @@ namespace ArmA_3_Server_Tool
         private void CopyModIdsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Clipboard.SetText(GetRichTextBoxText(ref modIdsRichTextBox));
-            modIdsCopiedLabel.Visibility = Visibility.Visible;
-            Task.Run(() =>
-            {
-                Task.Delay(CopyLabelVisibiltyTime).ContinueWith(_ =>
-                {
-
-                    Dispatcher.Invoke(() => {
-                        modIdsCopiedLabel.Visibility = Visibility.Hidden;
-                    });
-                });
-
-            });
+            uiHelper.ShowLabel(modIdsCopiedLabel, CopyLabelVisibiltyTime, Dispatcher);
         }
 
         private void CopyRegexCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -209,18 +190,7 @@ namespace ArmA_3_Server_Tool
         private void CopyRegexCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Clipboard.SetText(GetRichTextBoxText(ref regexRichTextBox));
-            regexCopiedLabel.Visibility = Visibility.Visible;
-            Task.Run(() =>
-            {
-                Task.Delay(CopyLabelVisibiltyTime).ContinueWith(_ =>
-                {
-
-                    Dispatcher.Invoke(() => {
-                        regexCopiedLabel.Visibility = Visibility.Hidden;
-                    });
-                });
-
-            });
+            uiHelper.ShowLabel(regexCopiedLabel, CopyLabelVisibiltyTime, Dispatcher);
         }
     }
 }

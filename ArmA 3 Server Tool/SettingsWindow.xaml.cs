@@ -21,6 +21,8 @@ namespace ArmA_3_Server_Tool
     {
         private readonly MainWindow mainWindow;
 
+        private UIHelper uiHelper = new UIHelper();
+
         public SettingsWindow(MainWindow mainWindow)
         {
             InitializeComponent();
@@ -36,6 +38,7 @@ namespace ArmA_3_Server_Tool
         {
             Properties.Settings.Default.Save();
             mainWindow.LoadModInfos(mainWindow.LastOpenedFile);
+            uiHelper.ShowLabel(settingsSavedLabel, MainWindow.CopyLabelVisibiltyTime, Dispatcher);
             
         }
     }

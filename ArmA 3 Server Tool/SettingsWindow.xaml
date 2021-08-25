@@ -10,7 +10,7 @@
     <Window.CommandBindings>
         <CommandBinding Command="Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed" />
     </Window.CommandBindings>
-    <Grid>
+    <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
@@ -30,7 +30,8 @@
         
         <Label Grid.Row="2" Grid.Column="0" x:Name="modNamesPrefixLabel" Content="{x:Static p:Resources.ModNamesPrefex}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
         <TextBox x:Name="modNamesPrefixTextBox" Grid.Row="2" Grid.Column="1" Height="auto" Margin="10,5,-80,4" TextWrapping="Wrap" Text="{Binding Source={x:Static p:Settings.Default}, Path=ModNamesPrefix}" VerticalAlignment="Center"/>
-        <Button x:Name="settingsSaveButton" Command="Save" Content="{x:Static p:Resources.Save}" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="settingsSaveButton" Command="Save" Content="{x:Static p:Resources.Save}" HorizontalAlignment="Center" Margin="26,5,30,0" Grid.Row="3" VerticalAlignment="Top" Width="75"/>
+        <Label x:Name="settingsSavedLabel" Content="{x:Static p:Resources.SettingsSaved}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,-7,0" Grid.Row="3" VerticalAlignment="Top" Visibility="Hidden"/>
 
 
 

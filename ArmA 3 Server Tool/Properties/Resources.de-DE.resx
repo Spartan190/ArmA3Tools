@@ -156,4 +156,7 @@
   <data name="Settings" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
+  <data name="SettingsSaved" xml:space="preserve">
+    <value>Einstellungen gespeichert!</value>
+  </data>
 </root>
