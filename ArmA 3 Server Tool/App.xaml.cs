@@ -19,6 +19,17 @@ namespace ArmA_3_Server_Tool
             //SetLanguageDictionary();
         }
 
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            MainWindow wnd = new MainWindow();
+            
+            wnd.Show();
+            if (e.Args.Length == 1)
+            {
+                wnd.LoadModInfos(e.Args[0]);
+            }
+        }
+
         private void SetLanguageDictionary()
         {
             ArmA_3_Server_Tool.Properties.Resources.Culture = new System.Globalization.CultureInfo("en");

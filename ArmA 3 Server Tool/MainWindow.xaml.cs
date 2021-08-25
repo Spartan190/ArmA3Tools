@@ -68,9 +68,7 @@ namespace ArmA_3_Server_Tool
             openFileDialog.Filter = "ArmA 3 Preset File|*.html";
             if (openFileDialog.ShowDialog() == true)
             {
-                LastOpenedFile = openFileDialog.FileName;
-                Title = $"{title} ({Path.GetFileName(LastOpenedFile)})";
-                LoadModInfos(LastOpenedFile);
+                LoadModInfos(openFileDialog.FileName);
             }
         }
 
@@ -78,6 +76,8 @@ namespace ArmA_3_Server_Tool
         {
             if (!string.IsNullOrEmpty(fileName))
             {
+                LastOpenedFile = fileName;
+                Title = $"{title} ({Path.GetFileName(LastOpenedFile)})";
                 ArmA3PresetFile armA3PresetFile = new ArmA3PresetFile(fileName);
                 StringBuilder modNamesStringBuilder = new StringBuilder();
                 StringBuilder modIdsStringBuilder = new StringBuilder();
