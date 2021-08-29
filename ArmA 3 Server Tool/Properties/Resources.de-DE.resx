@@ -129,6 +129,15 @@
   <data name="File" xml:space="preserve">
     <value>Datei</value>
   </data>
+  <data name="FTPAddresseLabel" xml:space="preserve">
+    <value>FTP Adresse</value>
+  </data>
+  <data name="FTPPasswordLabel" xml:space="preserve">
+    <value>FTP Passwort</value>
+  </data>
+  <data name="FTPUserLabel" xml:space="preserve">
+    <value>FTP Benutzername</value>
+  </data>
   <data name="ModIdSeperatorLabel" xml:space="preserve">
     <value>Mod ID Trenner</value>
   </data>

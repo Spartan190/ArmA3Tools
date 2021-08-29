@@ -11,5 +11,14 @@
     <Setting Name="ModNamesPrefix" Type="System.String" Scope="User">
       <Value Profile="(Default)">@</Value>
     </Setting>
+    <Setting Name="FTPAddresse" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FTPUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FTPPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

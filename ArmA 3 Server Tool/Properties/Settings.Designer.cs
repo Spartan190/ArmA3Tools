@@ -58,5 +58,41 @@ namespace ArmA_3_Server_Tool.Properties {
                 this["ModNamesPrefix"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        public string FTPAddresse {
+            get {
+                return ((string)(this["FTPAddresse"]));
+            }
+            set {
+                this["FTPAddresse"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FTPUser {
+            get {
+                return ((string)(this["FTPUser"]));
+            }
+            set {
+                this["FTPUser"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FTPPassword {
+            get {
+                return ((string)(this["FTPPassword"]));
+            }
+            set {
+                this["FTPPassword"] = value;
+            }
+        }
     }
 }

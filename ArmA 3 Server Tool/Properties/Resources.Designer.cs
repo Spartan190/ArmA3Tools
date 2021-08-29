@@ -97,6 +97,33 @@ namespace ArmA_3_Server_Tool.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FTP Addresse.
+        /// </summary>
+        public static string FTPAddresseLabel {
+            get {
+                return ResourceManager.GetString("FTPAddresseLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FTP Password.
+        /// </summary>
+        public static string FTPPasswordLabel {
+            get {
+                return ResourceManager.GetString("FTPPasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FTP User.
+        /// </summary>
+        public static string FTPUserLabel {
+            get {
+                return ResourceManager.GetString("FTPUserLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mod ID Seperator.
         /// </summary>
         public static string ModIdSeperatorLabel {
