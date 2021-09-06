@@ -212,5 +212,14 @@ namespace ArmA_3_Server_Tool.Properties {
                 return ResourceManager.GetString("SettingsSaved", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify.
+        /// </summary>
+        public static string Verify {
+            get {
+                return ResourceManager.GetString("Verify", resourceCulture);
+            }
+        }
     }
 }

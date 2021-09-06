@@ -71,6 +71,7 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIHelper.cs" />
+    <Compile Include="ViewModel\ArmA3ModViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -132,6 +133,7 @@
   <ItemGroup>
     <Resource Include="server.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>DEL /S /Q /F "D:\ArmA3PresetTool\UI\*"

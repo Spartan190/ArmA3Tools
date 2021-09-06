@@ -168,4 +168,7 @@
   <data name="SettingsSaved" xml:space="preserve">
     <value>Einstellungen gespeichert!</value>
   </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Verifizieren</value>
+  </data>
 </root>

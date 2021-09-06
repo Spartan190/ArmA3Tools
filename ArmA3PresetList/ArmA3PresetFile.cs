@@ -12,15 +12,25 @@ namespace ArmA3PresetList
 
     public class ArmA3Mod
     {
-        public readonly string displayName;
-        public readonly string link;
-        public readonly string workshopId;
+        public virtual string DisplayName {
+            get;
+            protected set;
+        }
+        public virtual string Link {
+            get;
+            protected set;
+        }
+
+        public virtual string WorkshopId {
+            get;
+            protected set;
+        }
 
         public ArmA3Mod(string displayName, string link, string workshopId)
         {
-            this.displayName = displayName;
-            this.link = link;
-            this.workshopId = workshopId;
+            this.DisplayName = displayName;
+            this.Link = link;
+            this.WorkshopId = workshopId;
         }
     }
     public class ArmA3PresetFile

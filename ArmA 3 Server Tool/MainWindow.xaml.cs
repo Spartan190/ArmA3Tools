@@ -1,6 +1,8 @@
-﻿using ArmA3PresetList;
+﻿using ArmA_3_Server_Tool.ViewModel;
+using ArmA3PresetList;
 using Microsoft.Win32;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -26,6 +28,8 @@ namespace ArmA_3_Server_Tool
             get;
             private set;
         }
+
+        public ObservableCollection<ArmA3ModViewModel> A3Mods { get; } = new ObservableCollection<ArmA3ModViewModel>();
 
         private string title = "";
 
@@ -72,13 +76,16 @@ namespace ArmA_3_Server_Tool
                 LoadModInfos(openFileDialog.FileName);
             }
         }
-
         public void LoadModInfos(string fileName)
         {
             if (!string.IsNullOrEmpty(fileName))
             {
                 LastOpenedFile = fileName;
                 Title = $"{title} ({Path.GetFileName(LastOpenedFile)})";
+
+
+                A3Mods.Clear();
+
                 ArmA3PresetFile armA3PresetFile = new ArmA3PresetFile(fileName);
                 StringBuilder modNamesStringBuilder = new StringBuilder();
                 StringBuilder modIdsStringBuilder = new StringBuilder();
@@ -98,8 +105,8 @@ namespace ArmA_3_Server_Tool
                 foreach (var armaMod in armA3PresetFile.armA3Mods)
                 {
 
-                    string modNameToSave = modNamesPrefix + HttpUtility.HtmlDecode(armaMod.displayName);
-                    string modIdToSave = armaMod.workshopId;
+                    string modNameToSave = modNamesPrefix + HttpUtility.HtmlDecode(armaMod.DisplayName);
+                    string modIdToSave = armaMod.WorkshopId;
 
                     bool modAlreadyAdded = addedMods.Contains(modNameToSave);
 
@@ -122,24 +129,20 @@ namespace ArmA_3_Server_Tool
                     {
                         modNamesStringBuilder.Append(modNameToSave);
                         modNamesCount++;
-                        checkRegexStringBuilder.Append($"({armaMod.displayName.Replace("(", "\\(").Replace(")", "\\)").Replace(".", "\\.")}\\n)");
+                        checkRegexStringBuilder.Append($"({armaMod.DisplayName.Replace("(", "\\(").Replace(")", "\\)").Replace(".", "\\.")}\\n)");
                         regexCount++;
                         addedMods.Add(modNameToSave);
                     }
 
                     modIdsStringBuilder.Append(modIdToSave);
                     modIdsCount++;
-
+                    A3Mods.Add(new ArmA3ModViewModel(armaMod));
                 }
 
-                SetRichTextBoxText(ref displayNamesRichTextBox, modNamesStringBuilder.ToString());
+
                 modNamesCountLabel.Content = $"({modNamesCount})";
 
-                SetRichTextBoxText(ref modIdsRichTextBox, modIdsStringBuilder.ToString());
                 modIdsCountLabel.Content = $"({modIdsCount})";
-
-                SetRichTextBoxText(ref regexRichTextBox, checkRegexStringBuilder.ToString());
-                regexCountLabel.Content = $"({regexCount})";
             }
         }
 
@@ -171,35 +174,34 @@ namespace ArmA_3_Server_Tool
 
         private void CopyModNamesCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !string.IsNullOrEmpty(GetRichTextBoxText(ref displayNamesRichTextBox));
+            e.CanExecute = true;// check if list is set
         }
 
         private void CopyModNamesCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Clipboard.SetText(GetRichTextBoxText(ref displayNamesRichTextBox));
+            
             uiHelper.ShowLabel(modIdsCopiedLabel, CopyLabelVisibiltyTime, Dispatcher);
         }
 
         private void CopyModIdsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !string.IsNullOrEmpty(GetRichTextBoxText(ref modIdsRichTextBox));
+            e.CanExecute = true; // check if list is set
         }
 
         private void CopyModIdsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Clipboard.SetText(GetRichTextBoxText(ref modIdsRichTextBox));
+            
             uiHelper.ShowLabel(modIdsCopiedLabel, CopyLabelVisibiltyTime, Dispatcher);
         }
 
-        private void CopyRegexCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void VerifyCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !string.IsNullOrEmpty(GetRichTextBoxText(ref regexRichTextBox));
+            
         }
 
-        private void CopyRegexCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void VerifyCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Clipboard.SetText(GetRichTextBoxText(ref regexRichTextBox));
-            uiHelper.ShowLabel(regexCopiedLabel, CopyLabelVisibiltyTime, Dispatcher);
+            
         }
     }
 }

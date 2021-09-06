@@ -39,10 +39,10 @@ namespace ArmA_3_Server_Tool
                 typeof(CustomCommands)
             );
 
-        public static readonly RoutedUICommand CopyRegex = new RoutedUICommand
+        public static readonly RoutedUICommand Verify = new RoutedUICommand
             (
-                "Copy Regex",
-                "CopyRegex",
+                "Verify",
+                "Verify",
                 typeof(CustomCommands)
             );
     }
