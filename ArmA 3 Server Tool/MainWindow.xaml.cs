@@ -1,5 +1,6 @@
 ﻿using ArmA3PresetList;
 using Microsoft.Win32;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -84,6 +85,7 @@ namespace ArmA_3_Server_Tool
                 StringBuilder checkRegexStringBuilder = new StringBuilder();
 
                 var settings = Properties.Settings.Default;
+                List<string> addedMods = new List<string>();
                 string modNamesSeperator = settings.ModNamesSeperator;
                 string modNamesPrefix = settings.ModNamesPrefix;
                 string modIdsSeperator = settings.ModIdsSeperator;
@@ -99,7 +101,7 @@ namespace ArmA_3_Server_Tool
                     string modNameToSave = modNamesPrefix + HttpUtility.HtmlDecode(armaMod.displayName);
                     string modIdToSave = armaMod.workshopId;
 
-                    bool modAlreadyAdded = modNamesStringBuilder.ToString().Contains(modNameToSave);
+                    bool modAlreadyAdded = addedMods.Contains(modNameToSave);
 
                     if (isFirst)
                     {
@@ -122,6 +124,7 @@ namespace ArmA_3_Server_Tool
                         modNamesCount++;
                         checkRegexStringBuilder.Append($"({armaMod.displayName.Replace("(", "\\(").Replace(")", "\\)").Replace(".", "\\.")}\\n)");
                         regexCount++;
+                        addedMods.Add(modNameToSave);
                     }
 
                     modIdsStringBuilder.Append(modIdToSave);
