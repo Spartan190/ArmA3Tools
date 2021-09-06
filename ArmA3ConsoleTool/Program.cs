@@ -43,7 +43,7 @@ namespace ArmA3PresetList
             foreach (var mod in armA3PresetFile.armA3Mods)
             {
                 
-                string modDisplayName = HttpUtility.HtmlDecode(mod.displayName);
+                string modDisplayName = HttpUtility.HtmlDecode(mod.DisplayName);
 
                 if (!modDisplayNames.ToString().Contains($"@{modDisplayName};"))
                 {
@@ -53,7 +53,7 @@ namespace ArmA3PresetList
                 }
 
 
-                string modId = mod.workshopId;
+                string modId = mod.WorkshopId;
 
                 modIds.Append($"{modId};");
 
