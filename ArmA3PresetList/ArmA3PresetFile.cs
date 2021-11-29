@@ -57,10 +57,11 @@ namespace ArmA3PresetList
                 if (htmlDoc.DocumentNode != null)
                 {
 
-                    var modContainers = htmlDoc.DocumentNode.SelectNodes("//body/div/table/tr");
-                    foreach (var modContainer in modContainers)
+                    var containers = htmlDoc.DocumentNode.SelectNodes("//body/div[contains(@class, 'mod-list')]/table/tr");
+                    foreach (var modContainer in containers)
                     {
                         var modData = modContainer.SelectNodes("td");
+
                         string modDisplayName = modData[0].InnerText;
                         int colonIndex = modDisplayName.IndexOf(':');
                         if (colonIndex != -1)
@@ -68,14 +69,19 @@ namespace ArmA3PresetList
                             modDisplayName = modDisplayName.Remove(colonIndex);
                         }
 
-                        //modDisplayName = modDisplayName.Replace("  ", " ");
                         modDisplayName = modDisplayName.TrimEnd();
 
-                        string modLink = modData[2].SelectSingleNode("a").InnerText;
+                        bool isFromSteam = modData[1].SelectSingleNode("span[contains(@class, 'from-steam')]") != null;
 
-                        string modId = modLink.Substring(modLink.LastIndexOf("?id=") + 4);
+                        if (isFromSteam)
+                        {
+                            string modLink = modData[2].SelectSingleNode("a").InnerText;
 
-                        armA3Mods.Add(new ArmA3Mod(modDisplayName, modLink, modId));
+                            string modId = modLink.Substring(modLink.LastIndexOf("?id=") + 4);
+                            armA3Mods.Add(new ArmA3Mod(modDisplayName, modLink, modId));
+                        }
+
+
                     }
                 }
                 else
