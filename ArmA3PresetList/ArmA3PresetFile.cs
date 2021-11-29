@@ -58,6 +58,12 @@ namespace ArmA3PresetList
                 {
 
                     var containers = htmlDoc.DocumentNode.SelectNodes("//body/div[contains(@class, 'mod-list')]/table/tr");
+
+                    if(containers == null)
+                    {
+                        throw new FileFormatException("No Workshop mods found in this Preset file.");
+                    }
+
                     foreach (var modContainer in containers)
                     {
                         var modData = modContainer.SelectNodes("td");
@@ -83,6 +89,7 @@ namespace ArmA3PresetList
 
 
                     }
+
                 }
                 else
                 {

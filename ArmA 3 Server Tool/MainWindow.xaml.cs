@@ -79,67 +79,78 @@ namespace ArmA_3_Server_Tool
             {
                 LastOpenedFile = fileName;
                 Title = $"{title} ({Path.GetFileName(LastOpenedFile)})";
-                ArmA3PresetFile armA3PresetFile = new ArmA3PresetFile(fileName);
-                StringBuilder modNamesStringBuilder = new StringBuilder();
-                StringBuilder modIdsStringBuilder = new StringBuilder();
-                StringBuilder checkRegexStringBuilder = new StringBuilder();
-
-                var settings = Properties.Settings.Default;
-                List<string> addedMods = new List<string>();
-                string modNamesSeperator = settings.ModNamesSeperator;
-                string modNamesPrefix = settings.ModNamesPrefix;
-                string modIdsSeperator = settings.ModIdsSeperator;
-
-                int modNamesCount = 0;
-                int modIdsCount = 0;
-                int regexCount = 0;
-
-                bool isFirst = true;
-                foreach (var armaMod in armA3PresetFile.armA3Mods)
+                ArmA3PresetFile armA3PresetFile = null;
+                try
                 {
-
-                    string modNameToSave = modNamesPrefix + HttpUtility.HtmlDecode(armaMod.displayName);
-                    string modIdToSave = armaMod.workshopId;
-
-                    bool modAlreadyAdded = addedMods.Contains(modNameToSave);
-
-                    if (isFirst)
-                    {
-                        isFirst = false;
-                    }
-                    else
-                    {
-                        if (!modAlreadyAdded)
-                        {
-                            modNamesStringBuilder.Append(modNamesSeperator);
-                            checkRegexStringBuilder.Append("|");
-                        }
-
-                        modIdsStringBuilder.Append(modIdsSeperator);
-                    }
-
-                    if (!modAlreadyAdded)
-                    {
-                        modNamesStringBuilder.Append(modNameToSave);
-                        modNamesCount++;
-                        checkRegexStringBuilder.Append($"({armaMod.displayName.Replace("(", "\\(").Replace(")", "\\)").Replace(".", "\\.")}\\n)");
-                        regexCount++;
-                        addedMods.Add(modNameToSave);
-                    }
-
-                    modIdsStringBuilder.Append(modIdToSave);
-                    modIdsCount++;
-
+                    armA3PresetFile = new ArmA3PresetFile(fileName);
+                } catch(FileFormatException ex)
+                {
+                    MessageBox.Show($"{ex.Message}", "File load error", MessageBoxButton.OK);
                 }
 
-                SetRichTextBoxText(ref displayNamesRichTextBox, modNamesStringBuilder.ToString());
-                modNamesCountLabel.Content = $"({modNamesCount})";
+                if (armA3PresetFile != null)
+                {
+                    StringBuilder modNamesStringBuilder = new StringBuilder();
+                    StringBuilder modIdsStringBuilder = new StringBuilder();
+                    StringBuilder checkRegexStringBuilder = new StringBuilder();
 
-                SetRichTextBoxText(ref modIdsRichTextBox, modIdsStringBuilder.ToString());
-                modIdsCountLabel.Content = $"({modIdsCount})";
+                    var settings = Properties.Settings.Default;
+                    List<string> addedMods = new List<string>();
+                    string modNamesSeperator = settings.ModNamesSeperator;
+                    string modNamesPrefix = settings.ModNamesPrefix;
+                    string modIdsSeperator = settings.ModIdsSeperator;
 
-                SetRichTextBoxText(ref regexRichTextBox, checkRegexStringBuilder.ToString());
-                regexCountLabel.Content = $"({regexCount})";
+                    int modNamesCount = 0;
+                    int modIdsCount = 0;
+                    int regexCount = 0;
+
+                    bool isFirst = true;
+                    foreach (var armaMod in armA3PresetFile.armA3Mods)
+                    {
+
+                        string modNameToSave = modNamesPrefix + HttpUtility.HtmlDecode(armaMod.displayName);
+                        string modIdToSave = armaMod.workshopId;
+
+                        bool modAlreadyAdded = addedMods.Contains(modNameToSave);
+
+                        if (isFirst)
+                        {
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            if (!modAlreadyAdded)
+                            {
+                                modNamesStringBuilder.Append(modNamesSeperator);
+                                checkRegexStringBuilder.Append("|");
+                            }
+
+                            modIdsStringBuilder.Append(modIdsSeperator);
+                        }
+
+                        if (!modAlreadyAdded)
+                        {
+                            modNamesStringBuilder.Append(modNameToSave);
+                            modNamesCount++;
+                            checkRegexStringBuilder.Append($"({armaMod.displayName.Replace("(", "\\(").Replace(")", "\\)").Replace(".", "\\.")}\\n)");
+                            regexCount++;
+                            addedMods.Add(modNameToSave);
+                        }
+
+                        modIdsStringBuilder.Append(modIdToSave);
+                        modIdsCount++;
+
+                    }
+
+                    SetRichTextBoxText(ref displayNamesRichTextBox, modNamesStringBuilder.ToString());
+                    modNamesCountLabel.Content = $"({modNamesCount})";
+
+                    SetRichTextBoxText(ref modIdsRichTextBox, modIdsStringBuilder.ToString());
+                    modIdsCountLabel.Content = $"({modIdsCount})";
+
+                    SetRichTextBoxText(ref regexRichTextBox, checkRegexStringBuilder.ToString());
+                    regexCountLabel.Content = $"({regexCount})";
+                }
             }
         }
 
