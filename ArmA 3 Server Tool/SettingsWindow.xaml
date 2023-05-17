@@ -23,28 +23,32 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.Column="0" x:Name="modIdSeperatorLabel" Content="{x:Static p:Resources.ModIdSeperatorLabel}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
         <TextBox x:Name="modIdSeperatorTextBox" Grid.Row="0" Grid.Column="1" Height="auto" Margin="10,4,-80,5" TextWrapping="Wrap" VerticalAlignment="Center"
                  Text="{Binding Source={x:Static p:Settings.Default}, Path=ModIdsSeperator}"/>
+        <Label Grid.Row="1" Grid.Column="0" x:Name="modIdPrefixLabel" Content="{x:Static p:Resources.ModIdsPrefixLabel}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
+        <TextBox x:Name="modIdPrefixTextBox" Grid.Row="1" Grid.Column="1" Height="auto" Margin="10,4,-80,5" TextWrapping="Wrap" VerticalAlignment="Center"
+                 Text="{Binding Source={x:Static p:Settings.Default}, Path=ModIdsPrefix}"/>
         
-        <Label Grid.Row="1" Grid.Column="0" x:Name="modNameSeperatorLabel" Content="{x:Static p:Resources.ModNamesSeperator}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-        <TextBox x:Name="modNamesSeperatorTextBox" Grid.Row="1" Grid.Column="1" Height="auto" Margin="10,5,-80,4" TextWrapping="Wrap" Text="{Binding Source={x:Static p:Settings.Default}, Path=ModNamesSeperator}" VerticalAlignment="Center"/>
+        <Label Grid.Row="2" Grid.Column="0" x:Name="modNameSeperatorLabel" Content="{x:Static p:Resources.ModNamesSeperator}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
+        <TextBox x:Name="modNamesSeperatorTextBox" Grid.Row="2" Grid.Column="1" Height="auto" Margin="10,5,-80,4" TextWrapping="Wrap" Text="{Binding Source={x:Static p:Settings.Default}, Path=ModNamesSeperator}" VerticalAlignment="Center"/>
         
-        <Label Grid.Row="2" Grid.Column="0" x:Name="modNamesPrefixLabel" Content="{x:Static p:Resources.ModNamesPrefex}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-        <TextBox x:Name="modNamesPrefixTextBox" Grid.Row="2" Grid.Column="1" Height="auto" Margin="10,5,-80,4" TextWrapping="Wrap" Text="{Binding Source={x:Static p:Settings.Default}, Path=ModNamesPrefix}" VerticalAlignment="Center"/>
+        <Label Grid.Row="3" Grid.Column="0" x:Name="modNamesPrefixLabel" Content="{x:Static p:Resources.ModNamesPrefix}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
+        <TextBox x:Name="modNamesPrefixTextBox" Grid.Row="3" Grid.Column="1" Height="auto" Margin="10,5,-80,4" TextWrapping="Wrap" Text="{Binding Source={x:Static p:Settings.Default}, Path=ModNamesPrefix}" VerticalAlignment="Center"/>
 
-        <Label Grid.Row="3" Grid.Column="0" x:Name="ftpAddresseLabel" Content="{x:Static p:Resources.FTPAddresseLabel}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-        <TextBox x:Name="ftpAddresseTextBox" Grid.Row="3" Grid.Column="1" Height="auto" Margin="10,5,-80,4" TextWrapping="Wrap" Text="{Binding Source={x:Static p:Settings.Default}, Path=FTPAddresse}" VerticalAlignment="Center"/>
+        <!--<Label Grid.Row="4" Grid.Column="0" x:Name="ftpAddresseLabel" Content="{x:Static p:Resources.FTPAddresseLabel}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
+        <TextBox x:Name="ftpAddresseTextBox" Grid.Row="4" Grid.Column="1" Height="auto" Margin="10,5,-80,4" TextWrapping="Wrap" Text="{Binding Source={x:Static p:Settings.Default}, Path=FTPAddresse}" VerticalAlignment="Center"/>
         
-        <Label Grid.Row="4" Grid.Column="0" x:Name="ftpUserLabel" Content="{x:Static p:Resources.FTPUserLabel}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-        <TextBox x:Name="ftpUserTextBox" Grid.Row="4" Grid.Column="1" Height="auto" Margin="10,5,-80,4" TextWrapping="Wrap" Text="{Binding Source={x:Static p:Settings.Default}, Path=FTPUser}" VerticalAlignment="Center"/>
+        <Label Grid.Row="5" Grid.Column="0" x:Name="ftpUserLabel" Content="{x:Static p:Resources.FTPUserLabel}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
+        <TextBox x:Name="ftpUserTextBox" Grid.Row="5" Grid.Column="1" Height="auto" Margin="10,5,-80,4" TextWrapping="Wrap" Text="{Binding Source={x:Static p:Settings.Default}, Path=FTPUser}" VerticalAlignment="Center"/>
 
-        <Label Grid.Row="5" Grid.Column="0" x:Name="ftpPasswordLabel" Content="{x:Static p:Resources.FTPPasswordLabel}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
-        <PasswordBox x:Name="ftpPasswordTextBox" Grid.Row="5" Grid.Column="1" Height="auto" Margin="10,5,-80,4" VerticalAlignment="Center"/>
+        <Label Grid.Row="6" Grid.Column="0" x:Name="ftpPasswordLabel" Content="{x:Static p:Resources.FTPPasswordLabel}" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center"/>
+        <PasswordBox x:Name="ftpPasswordTextBox" Grid.Row="6" Grid.Column="1" Height="auto" Margin="10,5,-80,4" VerticalAlignment="Center"/>-->
 
-        <Button x:Name="settingsSaveButton" Command="Save" Content="{x:Static p:Resources.Save}" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="6" VerticalAlignment="Center" Width="75" />
-        <Label x:Name="settingsSavedLabel" Content="{x:Static p:Resources.SettingsSaved}" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="6" VerticalAlignment="Center" Visibility="Hidden"/>
+        <Button x:Name="settingsSaveButton" Command="Save" Content="{x:Static p:Resources.Save}" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="4" VerticalAlignment="Center" Width="75" />
+        <Label x:Name="settingsSavedLabel" Content="{x:Static p:Resources.SettingsSaved}" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="4" VerticalAlignment="Center" Visibility="Hidden"/>
 
 
 

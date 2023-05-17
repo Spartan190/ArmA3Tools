@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ModIdsSeperator" Type="System.String" Scope="User">
-      <Value Profile="(Default)">,</Value>
+      <Value Profile="(Default)">;</Value>
     </Setting>
     <Setting Name="ModNamesSeperator" Type="System.String" Scope="User">
       <Value Profile="(Default)">;</Value>
@@ -19,6 +19,9 @@
     </Setting>
     <Setting Name="FTPPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ModIdsPrefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">@</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -144,6 +144,9 @@
   <data name="ModIDsLabel" xml:space="preserve">
     <value>Mod IDs</value>
   </data>
+  <data name="ModIdsPrefixLabel" xml:space="preserve">
+    <value>Mod IDs Präfix</value>
+  </data>
   <data name="ModNamesLabel" xml:space="preserve">
     <value>Mod Namen</value>
   </data>

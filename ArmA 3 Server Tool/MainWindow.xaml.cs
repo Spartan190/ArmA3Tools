@@ -99,6 +99,7 @@ namespace ArmA_3_Server_Tool
                     string modNamesSeperator = settings.ModNamesSeperator;
                     string modNamesPrefix = settings.ModNamesPrefix;
                     string modIdsSeperator = settings.ModIdsSeperator;
+                    string modIdsPrefix = settings.ModIdsPrefix;
 
                     int modNamesCount = 0;
                     int modIdsCount = 0;
@@ -109,7 +110,7 @@ namespace ArmA_3_Server_Tool
                     {
 
                         string modNameToSave = modNamesPrefix + HttpUtility.HtmlDecode(armaMod.displayName);
-                        string modIdToSave = armaMod.workshopId;
+                        string modIdToSave = modIdsPrefix + armaMod.workshopId;
 
                         bool modAlreadyAdded = addedMods.Contains(modNameToSave);
 

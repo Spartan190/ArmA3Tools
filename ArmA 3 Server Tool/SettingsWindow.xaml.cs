@@ -29,7 +29,7 @@ namespace ArmA_3_Server_Tool
         {
             InitializeComponent();
             this.mainWindow = mainWindow;
-            LoadFTPPassword();
+            //LoadFTPPassword();
         }
 
         private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -39,14 +39,14 @@ namespace ArmA_3_Server_Tool
 
         private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            SaveFTPPassword();
+            //SaveFTPPassword();
             Properties.Settings.Default.Save();
             mainWindow.LoadModInfos(mainWindow.LastOpenedFile);
             uiHelper.ShowLabel(settingsSavedLabel, MainWindow.CopyLabelVisibiltyTime, Dispatcher);
             
         }
 
-        private void SaveFTPPassword()
+        /*private void SaveFTPPassword()
         {
             // Data to protect. Convert a string to a byte[] using Encoding.UTF8.GetBytes().
             byte[] plaintext = Encoding.UTF8.GetBytes(ftpPasswordTextBox.Password);
@@ -62,9 +62,9 @@ namespace ArmA_3_Server_Tool
                 DataProtectionScope.CurrentUser);
 
             Properties.Settings.Default.FTPPassword = Convert.ToBase64String(ciphertext);
-        }
+        }*/
 
-        private void LoadFTPPassword()
+        /*private void LoadFTPPassword()
         {
             if (!string.IsNullOrEmpty(Properties.Settings.Default.FTPPassword)) {
                 // Data to protect. Convert a string to a byte[] using Encoding.UTF8.GetBytes().
@@ -87,6 +87,6 @@ namespace ArmA_3_Server_Tool
                 }
             }
 
-        }
+        }*/
     }
 }
